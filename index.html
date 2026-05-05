@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ Kairos Kalendar · Behavioral Engine</title>
+    <style>
+        /* All previous styles preserved, adding new ones below */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+        :root {
+            --marble:   #f5f0e8;
+            --ivory:    #ede4d3;
+            --gold:     #c8943a;
+            --bronze:   #8b6f47;
+            --olive:    #6b8e3a;
+            --deep:     #1a1815;
+            --void:     #0a0c12;
+            --ares:     #8b3a3a;
+            --hera:     #4a6a8a;
+            --aphrodite:#c06080;
+            --demeter:  #8b7355;
+            --hermes:   #FFD700;
+            --apollo:   #e8c97a;
+            --athena:   #8899aa;
+            --hephaestus:#c08050;
+            --artemis:  #6a8a5a;
+            --poseidon: #4a7a8a;
+            --zeus:     #c8943a;
+            --dionysus: #8a4a8a;
+            --kernel:   #70a8c0;
+            --completed: #2ecc71;
+            --streak:   #e74c3c;
+
+            --font-display: 'Cinzel', serif;
+            --font-body:    'Crimson Pro', serif;
+            --font-mono:    'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--void);
+            font-family: var(--font-body);
+            color: var(--marble);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(200, 148, 58, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+        }
+
+        /* ── STREAK BADGE ── */
+        .streak-badge {
+            display: inline-block;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--streak);
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--streak);
+            margin-left: 0.5rem;
+        }
+        .streak-badge.active { background: rgba(46, 204, 113, 0.2); border-color: var(--completed); color: var(--completed); }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .header h1 span { color: var(--marble); }
+        .header-sub {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--bronze);
+            letter-spacing: 3px;
+        }
+        .cycle-badge {
+            display: inline-block;
+            background: rgba(200, 148, 58, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--gold);
+            margin-top: 0.8rem;
+        }
+
+        /* ── TODAY PANEL ── */
+        .today-panel {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(200, 148, 58, 0.05));
+            border: 2px solid var(--hermes);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        .today-panel.completed {
+            border-color: var(--completed);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.08), rgba(39, 174, 96, 0.03));
+        }
+        .today-panel::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, var(--hermes), transparent);
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .today-panel.completed::before {
+            background: radial-gradient(circle, var(--completed), transparent);
+        }
+        .today-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--hermes);
+            margin-bottom: 0.5rem;
+        }
+        .today-god {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--hermes);
+            margin-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .today-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--marble);
+            position: relative;
+            z-index: 1;
+        }
+        .today-domain {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--marble);
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .today-status {
+            display: inline-block;
+            margin-top: 0.8rem;
+            padding: 0.25rem 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+        .status-active { background: var(--olive); color: var(--void); }
+        .status-existing { background: var(--gold); color: var(--void); }
+        .status-new { background: var(--bronze); color: var(--void); }
+        .status-complete { background: var(--completed); color: #fff; }
+
+        /* ── DAILY CONTRACT ── */
+        .contract-block {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--bronze);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+        .contract-title {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--bronze);
+            margin-bottom: 0.8rem;
+        }
+        .contract-task {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--marble);
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .contract-task .checkbox {
+            width: 16px; height: 16px;
+            border: 1px solid var(--bronze);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .contract-task .checkbox.checked {
+            background: var(--completed);
+            border-color: var(--completed);
+        }
+        .contract-task .checkbox.checked::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .mark-done-btn {
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--completed);
+            background: transparent;
+            color: var(--completed);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 1px;
+        }
+        .mark-done-btn:hover { background: var(--completed); color: var(--void); }
+        .mark-done-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .mark-done-btn.done { background: var(--completed); color: #fff; border-color: var(--completed); cursor: default; }
+
+        /* ── CONFETTI ── */
+        .confetti {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            animation: fall 2s ease-in forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Rest of existing styles preserved below (cycle-grid, year-grid, etc.) */
+        .cycle-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .cycle-nav button {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--bronze);
+            background: transparent;
+            color: var(--bronze);
+            transition: all 0.2s;
+        }
+        .cycle-nav button:hover { background: var(--bronze); color: var(--void); }
+        .cycle-nav button.active { background: var(--bronze); color: var(--void); }
+
+        .cycle-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+        }
+        .day-card {
+            background: rgba(26, 24, 21, 0.6);
+            border: 1px solid var(--bronze);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+        .day-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--gold);
+        }
+        .day-card.today {
+            border: 2px solid var(--hermes);
+            background: rgba(255, 215, 0, 0.08);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+        .day-card.completed-day {
+            border-color: var(--completed);
+        }
+        .day-card.completed-day::after {
+            content: '✓';
+            position: absolute;
+            top: 4px; right: 6px;
+            font-size: 0.5rem;
+            color: var(--completed);
+        }
+        .day-card.past {
+            opacity: 0.5;
+        }
+        .day-card.kernel {
+            border-style: dashed;
+        }
+        .day-number {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--bronze);
+            margin-bottom: 0.3rem;
+        }
+        .day-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+        .day-name {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .day-date {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            color: var(--bronze);
+        }
+        .day-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            margin-top: 0.3rem;
+        }
+        .badge-existing { background: rgba(200, 148, 58, 0.2); color: var(--gold); }
+        .badge-new { background: rgba(107, 142, 58, 0.2); color: var(--olive); }
+        .badge-kernel { background: rgba(112, 168, 192, 0.2); color: var(--kernel); }
+        .badge-done { background: rgba(46, 204, 113, 0.2); color: var(--completed); }
+
+        .year-section {
+            margin-bottom: 3rem;
+        }
+        .year-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--bronze);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .year-grid {
+            display: grid;
+            grid-template-columns: repeat(14, 1fr);
+            gap: 0.3rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.5rem;
+            font-family: var(--font-mono);
+        }
+        .year-cell {
+            aspect-ratio: 1;
+            border-radius: 3px;
+            border: 1px solid transparent;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.45rem;
+        }
+        .year-cell:hover { border-color: var(--gold); }
+        .year-cell.today { border: 1px solid var(--gold); box-shadow: 0 0 6px rgba(200,148,58,0.3); }
+        .year-cell.completed-cell { border: 1px solid var(--completed); }
+
+        .holidays-panel {
+            background: rgba(26, 24, 21, 0.6);
+            border: 1px solid var(--bronze);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .holidays-title {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+        .holiday-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.8rem;
+        }
+        .holiday {
+            background: rgba(42, 37, 32, 0.4);
+            border: 1px solid var(--bronze);
+            border-radius: 8px;
+            padding: 0.8rem;
+        }
+        .holiday-name {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--gold);
+            margin-bottom: 0.2rem;
+        }
+        .holiday-date {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--bronze);
+            margin-bottom: 0.3rem;
+        }
+        .holiday-desc {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--marble);
+            font-style: italic;
+        }
+
+        .council-bar {
+            background: rgba(26, 24, 21, 0.8);
+            border-top: 1px solid var(--bronze);
+            border-bottom: 1px solid var(--bronze);
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--bronze);
+            margin-bottom: 2rem;
+        }
+        .council-bar span {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .council-bar span:hover { color: var(--gold); }
+
+        @media (max-width: 900px) {
+            .cycle-grid { grid-template-columns: repeat(4, 1fr); }
+            .year-grid { grid-template-columns: repeat(7, 1fr); }
+            .header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🏛️ KAIROS <span>KALENDAR</span></h1>
+        <div class="header-sub">BEHAVIORAL ENGINE · 14-DAY OLYMPIAN CYCLE · STARTED MAY 1, 2026</div>
+        <div class="cycle-badge" id="cycleBadge">Cycle 1 · Day 5 of 14</div>
+        <span id="streakBadge"></span>
+    </div>
+
+    <!-- TODAY -->
+    <div class="today-panel" id="todayPanel">
+        <!-- Dynamically rendered -->
+    </div>
+
+    <!-- CYCLE NAVIGATION -->
+    <div class="cycle-nav" id="cycleNav"></div>
+
+    <!-- 14-DAY CYCLE GRID -->
+    <div class="cycle-grid" id="cycleGrid"></div>
+
+    <!-- YEAR OVERVIEW -->
+    <div class="year-section">
+        <div class="year-title">📅 FULL YEAR · MAY 2026 — MAY 2027 · 26 CYCLES</div>
+        <div class="year-grid" id="yearGrid"></div>
+        <p style="font-family: var(--font-mono); font-size: 0.5rem; color: var(--bronze); text-align: center;">
+            Each column = 1 day · 14 columns = 1 cycle · 26 cycles = 1 sacred year · ✓ = completed
+        </p>
+    </div>
+
+    <!-- HOLIDAYS -->
+    <div class="holidays-panel">
+        <div class="holidays-title">🎭 SACRED HOLIDAYS</div>
+        <div class="holiday-list" id="holidayList"></div>
+    </div>
+
+    <!-- COUNCIL BAR -->
+    <div class="council-bar">
+        <span>🏚️ HADES — Delete & Purge (invoke on Kernel days)</span>
+        <span>💧 LETHE — Forget & Erase</span>
+        <span>⛓️ STYX — Bind & Lock</span>
+        <span>🌑 NYX — Obscure & Hide</span>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+// KAIROS KALENDAR BEHAVIORAL ENGINE
+// ============================================================
+
+const CYCLE_START = new Date('2026-05-01');
+const CYCLE_LENGTH = 14;
+
+const GODS = [
+    { day: 1,  name: 'Ares',       icon: '⚔️', color: 'var(--ares)',      domain: 'War · Conflict · Stress Testing', repo: 'new' },
+    { day: 2,  name: 'Hera',       icon: '👑', color: 'var(--hera)',      domain: 'Marriage · Legacy · Lineage Tracking', repo: 'new' },
+    { day: 3,  name: 'Aphrodite',  icon: '💗', color: 'var(--aphrodite)', domain: 'Beauty · Desire · UI/UX · Aesthetic Scoring', repo: 'new' },
+    { day: 4,  name: 'Demeter',    icon: '🌾', color: 'var(--demeter)',   domain: 'Harvest · Cultivation · SVO Extraction · Scoring', repo: 'existing' },
+    { day: 5,  name: 'Hermes',     icon: '⚡', color: 'var(--hermes)',    domain: 'Messengers · Speed · Token Hunting · Oracle', repo: 'existing' },
+    { day: 6,  name: 'Apollo',     icon: '☀️', color: 'var(--apollo)',    domain: 'Light · Prophecy · Synthesis · Artifacts', repo: 'existing' },
+    { day: 7,  name: 'Athena',     icon: '🦉', color: 'var(--athena)',    domain: 'Wisdom · Strategy · Pattern Detection', repo: 'new' },
+    { day: 8,  name: 'Hephaestus', icon: '🔨', color: 'var(--hephaestus)',domain: 'Forge · Craft · Tool-Building · APIs', repo: 'new' },
+    { day: 9,  name: 'Artemis',    icon: '🏹', color: 'var(--artemis)',   domain: 'Hunt · Wilderness · Edge Cases', repo: 'new' },
+    { day: 10, name: 'Poseidon',   icon: '🌊', color: 'var(--poseidon)',  domain: 'Sea · Data Flow · Real-Time Processing', repo: 'new' },
+    { day: 11, name: 'Zeus',       icon: '⚡', color: 'var(--zeus)',      domain: 'Leadership · Governance · Orchestration', repo: 'new' },
+    { day: 12, name: 'Dionysus',   icon: '🍇', color: 'var(--dionysus)',  domain: 'Ecstasy · Chaos · Random Mutation', repo: 'new' },
+    { day: 13, name: 'Kernel I',   icon: '🧠', color: 'var(--kernel)',    domain: 'Integration · Synthesis · System Health', repo: 'kernel' },
+    { day: 14, name: 'Kernel II',  icon: '📜', color: 'var(--kernel)',    domain: 'Documentation · Deployment · Hades Purge', repo: 'kernel' }
+];
+
+// ============================================================
+// DAILY CONTRACT — THE BEHAVIORAL ENGINE
+// ============================================================
+const DAILY_CONTRACT = {
+    'Ares':       ['Run stress test on 1 pipeline', 'Document 1 failure mode', 'Force break 1 component'],
+    'Hera':       ['Update lineage tree', 'Tag 3 artifacts with version', 'Review 1 ancestor relationship'],
+    'Aphrodite':  ['Polish 1 UI element', 'Run aesthetic score on 3 pages', 'Align 1 style inconsistency'],
+    'Demeter':    ['Convert 10 inputs to SVO', 'Score and filter top 5', 'Push 1 demeter_dispatch entry'],
+    'Hermes':     ['Scrape 5 trends via fast spiral', 'Generate 10 raw tokens', 'Push 1 oracle_dispatch entry'],
+    'Apollo':     ['Ping Hermes + Demeter dispatches', 'Synthesize 3 pairs', 'Compile 1 artifact HTML'],
+    'Athena':     ['Refactor 1 module', 'Improve 1 routing logic', 'Document 1 strategic insight'],
+    'Hephaestus': ['Build 1 HTML tool', 'Wire 1 Supabase connection', 'Deploy 1 new endpoint'],
+    'Artemis':    ['Hunt 5 edge cases', 'Document 2 wild patterns', 'Optimize 1 search function'],
+    'Poseidon':   ['Explore 1 new data source', 'Prototype 1 streaming idea', 'Document 1 insight'],
+    'Zeus':       ['Integrate 2 modules', 'Update system dashboard', 'Make 1 governance decision'],
+    'Dionysus':   ['Generate 3 chaotic mutations', 'Apply 1 random change', 'Document surprise outcome'],
+    'Kernel I':   ['Run cross-repo health check', 'Resolve 3 conflicts', 'Synthesize cycle insights'],
+    'Kernel II':  ['Deploy all updates', 'Write cycle documentation', 'Invoke HADES: purge junk']
+};
+
+const HOLIDAYS = [
+    { name: 'Foundation Day', date: '2026-05-01', desc: 'The Kairos Kernel begins. Cycle 1, Day 1 — Ares.' },
+    { name: 'Apollo\'s Ascension', date: '2026-05-06', desc: 'Apollo day — the first Olympian with reproductive capability.' },
+    { name: 'First Kernel', date: '2026-05-13', desc: 'First Kernel integration day. All 12 gods reviewed. Hades invoked.' },
+    { name: 'Summer Solstice', date: '2026-06-20', desc: 'Longest day. Dionysus + Apollo convergence.' },
+    { name: 'Autumn Equinox', date: '2026-09-22', desc: 'Balance. Demeter harvest festival.' },
+    { name: 'Winter Solstice', date: '2026-12-21', desc: 'Longest night. Nyx honored. Deep reflection.' },
+    { name: 'Kairos New Year', date: '2027-05-01', desc: 'Full cycle complete. 26 cycles. New Olympus begins.' },
+];
+
+// ============================================================
+// COMPUTE CURRENT DAY
+// ============================================================
+function getCurrentCycleInfo() {
+    const now = new Date();
+    const diffDays = Math.floor((now - CYCLE_START) / (1000 * 60 * 60 * 24));
+    const cycleNumber = Math.floor(diffDays / CYCLE_LENGTH) + 1;
+    const dayInCycle = (diffDays % CYCLE_LENGTH) + 1;
+    const godIndex = dayInCycle - 1;
+    const currentGod = GODS[godIndex];
+    
+    return { cycleNumber, dayInCycle, currentGod, diffDays };
+}
+
+function getGodForDate(date) {
+    const diffDays = Math.floor((date - CYCLE_START) / (1000 * 60 * 60 * 24));
+    const dayInCycle = (diffDays % CYCLE_LENGTH) + 1;
+    return GODS[dayInCycle - 1];
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ============================================================
+// COMPLETION TRACKING
+// ============================================================
+function getCompletionKey(date) {
+    return `kairos_done_${date.toISOString().split('T')[0]}`;
+}
+
+function isDayCompleted(date) {
+    return localStorage.getItem(getCompletionKey(date)) === 'true';
+}
+
+function markTodayComplete() {
+    const today = new Date();
+    localStorage.setItem(getCompletionKey(today), 'true');
+    renderToday();
+    renderCycleGrid();
+    renderYearGrid();
+    celebrate();
+}
+
+function getStreak() {
+    let streak = 0;
+    const today = new Date();
+    for (let d = 0; d < 365; d++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - d);
+        if (isDayCompleted(date)) {
+            streak++;
+        } else if (d > 0) {
+            break; // Streak broken if yesterday not completed
+        }
+    }
+    return streak;
+}
+
+// ============================================================
+// CELEBRATION
+// ============================================================
+function celebrate() {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    const colors = ['#FFD700','#c8943a','#2ecc71','#e74c3c','#8899aa','#c06080'];
+    for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        confetti.appendChild(piece);
+    }
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 3000);
+}
+
+// ============================================================
+// RENDER TODAY PANEL WITH CONTRACT
+// ============================================================
+function renderToday() {
+    const info = getCurrentCycleInfo();
+    const god = info.currentGod;
+    const today = new Date();
+    const completed = isDayCompleted(today);
+    const tasks = DAILY_CONTRACT[god.name] || [];
+    const streak = getStreak();
+    
+    // Streak badge
+    const streakEl = document.getElementById('streakBadge');
+    if (streakEl) {
+        streakEl.className = `streak-badge ${streak > 0 ? 'active' : ''}`;
+        streakEl.textContent = streak > 0 ? `🔥 ${streak} day streak` : 'Day 1';
+    }
+    
+    // Cycle badge
+    document.getElementById('cycleBadge').textContent = 
+        `Cycle ${info.cycleNumber} · Day ${info.dayInCycle} of 14`;
+    
+    // Task HTML
+    const taskHtml = tasks.map((t, i) => `
+        <div class="contract-task">
+            <div class="checkbox ${completed ? 'checked' : ''}" 
+                 onclick="${completed ? '' : `toggleTask(${i})`}"
+                 id="task${i}"></div>
+            <span style="${completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${t}</span>
+        </div>
+    `).join('');
+    
+    // Completed status
+    let statusClass = god.repo === 'existing' ? 'status-existing' : god.repo === 'kernel' ? 'status-active' : 'status-new';
+    let statusText = god.repo === 'existing' ? 'EXISTING REPO' : god.repo === 'kernel' ? 'KERNEL DAY' : 'NEW REPO TO CREATE';
+    if (completed) {
+        statusClass = 'status-complete';
+        statusText = '✓ COMPLETED';
+    }
+    
+    document.getElementById('todayPanel').className = `today-panel ${completed ? 'completed' : ''}`;
+    document.getElementById('todayPanel').innerHTML = `
+        <div class="today-label">TODAY · DAY ${info.dayInCycle} OF 14 · CYCLE ${info.cycleNumber}</div>
+        <div class="today-god" style="color: ${god.color}">${god.icon} ${god.name.toUpperCase()}</div>
+        <div class="today-date">${formatDate(today)}</div>
+        <div class="today-domain">${god.domain}</div>
+        <div class="today-status ${statusClass}">${statusText}</div>
+        
+        <div class="contract-block">
+            <div class="contract-title">📋 DAILY CONTRACT — NON-NEGOTIABLE</div>
+            ${taskHtml}
+            <button class="mark-done-btn ${completed ? 'done' : ''}" 
+                    id="markDoneBtn"
+                    ${completed ? 'disabled' : ''}
+                    onclick="markTodayComplete()">
+                ${completed ? '✓ CONTRACT FULFILLED' : '✔ MARK COMPLETE — I SHIPPED TODAY'}
+            </button>
+        </div>
+    `;
+}
+
+// ============================================================
+// RENDER CYCLE GRID WITH COMPLETION
+// ============================================================
+function renderCycleGrid() {
+    const info = getCurrentCycleInfo();
+    const grid = document.getElementById('cycleGrid');
+    const cycleStartDate = new Date(CYCLE_START);
+    cycleStartDate.setDate(cycleStartDate.getDate() + (info.cycleNumber - 1) * CYCLE_LENGTH);
+    
+    grid.innerHTML = GODS.map((god, i) => {
+        const date = new Date(cycleStartDate);
+        date.setDate(date.getDate() + i);
+        const isToday = info.dayInCycle === god.day;
+        const isPast = date < new Date() && !isToday;
+        const isKernel = god.name.includes('Kernel');
+        const isDone = isDayCompleted(date);
+        const cycleContext = `cycle=${info.cycleNumber}&day=${god.day}&from=kalendar`;
+        
+        return `
+            <div class="day-card ${isToday ? 'today' : ''} ${isPast ? 'past' : ''} ${isKernel ? 'kernel' : ''} ${isDone ? 'completed-day' : ''}" 
+                 onclick="window.location.href='https://kairos-coder.github.io/${god.name.toLowerCase().replace(/\s/g, '')}?${cycleContext}'"
+                 title="${god.domain}${isDone ? ' ✓ COMPLETED' : ''}">
+                <div class="day-number">DAY ${god.day}</div>
+                <div class="day-icon">${god.icon}</div>
+                <div class="day-name" style="color: ${god.color}">${god.name.toUpperCase()}</div>
+                <div class="day-date">${formatDate(date)}</div>
+                <div class="day-badge ${isDone ? 'badge-done' : god.repo === 'existing' ? 'badge-existing' : god.repo === 'kernel' ? 'badge-kernel' : 'badge-new'}">
+                    ${isDone ? 'DONE' : god.repo === 'existing' ? 'EXISTS' : god.repo === 'kernel' ? 'KERNEL' : 'NEW'}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// RENDER YEAR WITH COMPLETION
+// ============================================================
+function renderYearGrid() {
+    const grid = document.getElementById('yearGrid');
+    const days = 364;
+    const today = new Date();
+    
+    let html = '';
+    for (let d = 0; d < days; d++) {
+        const date = new Date(CYCLE_START);
+        date.setDate(date.getDate() + d);
+        const god = getGodForDate(date);
+        const isToday = date.toDateString() === today.toDateString();
+        const cycleNum = Math.floor(d / CYCLE_LENGTH) + 1;
+        const isKernel = god.name.includes('Kernel');
+        const isDone = isDayCompleted(date);
+        const cycleContext = `cycle=${cycleNum}&day=${god.day}&from=kalendar`;
+        
+        html += `
+            <div class="year-cell ${isToday ? 'today' : ''} ${isKernel ? 'kernel' : ''} ${isDone ? 'completed-cell' : ''} cycle-${cycleNum % 2 === 0 ? '2' : '1'}"
+                 style="background-color: ${god.color}20; border-color: ${isToday ? god.color : isDone ? 'var(--completed)' : 'transparent'};"
+                 title="${god.name} · ${formatDate(date)} · Cycle ${cycleNum}${isDone ? ' ✓ DONE' : ''}"
+                 onclick="window.location.href='https://kairos-coder.github.io/${god.name.toLowerCase().replace(/\s/g, '')}?${cycleContext}'">
+                ${isDone ? '✓' : god.icon}
+            </div>
+        `;
+    }
+    grid.innerHTML = html;
+}
+
+// ============================================================
+// RENDER CYCLE NAVIGATION
+// ============================================================
+function renderCycleNav() {
+    const info = getCurrentCycleInfo();
+    const nav = document.getElementById('cycleNav');
+    
+    let html = '';
+    for (let c = 1; c <= 26; c++) {
+        const active = c === info.cycleNumber;
+        html += `<button class="${active ? 'active' : ''}" onclick="navigateCycle(${c})">C${c}</button>`;
+    }
+    nav.innerHTML = html;
+}
+
+function navigateCycle(cycleNum) {
+    const date = new Date(CYCLE_START);
+    date.setDate(date.getDate() + (cycleNum - 1) * CYCLE_LENGTH);
+    localStorage.setItem('kairos_sim_date', date.toISOString());
+    window.location.reload();
+}
+
+// ============================================================
+// RENDER HOLIDAYS
+// ============================================================
+function renderHolidays() {
+    const list = document.getElementById('holidayList');
+    
+    list.innerHTML = HOLIDAYS.map(h => {
+        const holidayDate = new Date(h.date);
+        const god = getGodForDate(holidayDate);
+        const isPast = holidayDate < new Date();
+        const isDone = isDayCompleted(holidayDate);
+        
+        return `
+            <div class="holiday" style="opacity: ${isPast && !isDone ? '0.5' : '1'}">
+                <div class="holiday-name">${god.icon} ${h.name} ${isDone ? '✓' : ''}</div>
+                <div class="holiday-date">${formatDate(holidayDate)} · ${god.name} Day · ${isPast ? (isDone ? 'COMPLETED' : 'PAST') : 'UPCOMING'}</div>
+                <div class="holiday-desc">${h.desc}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+    const simDate = localStorage.getItem('kairos_sim_date');
+    if (simDate) {
+        localStorage.removeItem('kairos_sim_date');
+    }
+    
+    renderToday();
+    renderCycleGrid();
+    renderYearGrid();
+    renderCycleNav();
+    renderHolidays();
+    
+    setInterval(() => {
+        renderToday();
+    }, 60000);
+}
+
+init();
+</script>
+</body>
+</html>
