@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏛️ Kairos Kalendar · Olympian Engine</title>
+<title>🏛️ Kairos Kalendar · Pythagorean Olympian Engine</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 :root {
-    /* Palette */
     --void:       #060608;
     --deep:       #0e0e14;
     --stone:      #1c1c24;
@@ -21,23 +20,23 @@
     --bronze:     #7a5a30;
     --ember:      #4a2a10;
 
-    /* Domain colors — each god's TRUE color */
-    --ares:       #c0382a;       /* War — deep red, not decorative */
-    --hera:       #5a7aaa;       /* Legacy — cool institutional blue */
-    --aphrodite:  #b05870;       /* Beauty — muted rose, not pink */
-    --demeter:    #7a6a40;       /* Harvest — wheat/earth */
-    --hermes:     #d4b84a;       /* Speed — bright gold */
-    --apollo:     #d4a850;       /* Light — warm amber */
-    --athena:     #6a8898;       /* Wisdom — grey-steel */
-    --hephaestus: #c07040;       /* Forge — hot iron */
-    --artemis:    #5a8050;       /* Hunt — forest */
-    --poseidon:   #3a7090;       /* Sea — deep teal */
-    --zeus:       #9a8ac0;       /* Rule — storm-purple */
-    --dionysus:   #8a4080;       /* Chaos — violet */
-    --kernel:     #50a0b0;       /* Integration — cyan-steel */
+    --hermes:     #d4b84a;
+    --aphrodite:  #b05870;
+    --ares:       #c0382a;
+    --apollo:     #d4a850;
+    --demeter:    #7a6a40;
+    --hephaestus: #c07040;
+    --hera:       #5a7aaa;
+    --poseidon:   #3a7090;
+    --athena:     #6a8898;
+    --zeus:       #9a8ac0;
+    --artemis:    #5a8050;
+    --dionysus:   #8a4080;
+    --kernel:     #50a0b0;
 
     --completed:  #3a9060;
     --streak:     #c04040;
+    --hades:      #3a2040;
 
     --font-display: 'Cinzel Decorative', serif;
     --font-serif:   'Cinzel', serif;
@@ -46,7 +45,6 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -57,609 +55,142 @@ body {
     overflow-x: hidden;
 }
 
-/* ── BACKGROUND ── */
 body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background:
         radial-gradient(ellipse 60% 40% at 15% 20%, rgba(200,148,58,0.04) 0%, transparent 60%),
         radial-gradient(ellipse 50% 60% at 85% 80%, rgba(90,90,140,0.04) 0%, transparent 60%),
         repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.005) 80px, rgba(255,255,255,0.005) 81px),
         repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.005) 80px, rgba(255,255,255,0.005) 81px);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-    position: relative;
-    z-index: 1;
-}
+.container { max-width: 1400px; margin: 0 auto; padding: 3rem 2rem; position: relative; z-index: 1; }
 
-/* ── HEADER ── */
-.header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.header-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 5px;
-    color: var(--bronze);
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-}
-
-.header h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 900;
-    color: var(--gold);
-    letter-spacing: 4px;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-}
-
-.header h1 em {
-    font-style: normal;
-    color: var(--marble);
-    font-weight: 400;
-    font-size: 0.7em;
-    display: block;
-    letter-spacing: 8px;
-}
-
-.header-rule {
-    width: 80px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 1rem auto;
-}
-
-.header-sub {
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    font-style: italic;
-    color: var(--smoke);
-    max-width: 500px;
-    margin: 0 auto 1.5rem;
-    line-height: 1.6;
-}
-
-.badges {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-}
-
-.badge {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-    padding: 0.3rem 0.8rem;
-    border-radius: 2px;
-    border: 1px solid;
-}
-
+.header { text-align: center; margin-bottom: 3rem; }
+.header-eyebrow { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 5px; color: var(--bronze); margin-bottom: 1rem; text-transform: uppercase; }
+.header h1 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; color: var(--gold); letter-spacing: 4px; line-height: 1.1; margin-bottom: 0.5rem; }
+.header h1 em { font-style: normal; color: var(--marble); font-weight: 400; font-size: 0.7em; display: block; letter-spacing: 8px; }
+.header-rule { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 1rem auto; }
+.header-sub { font-family: var(--font-body); font-size: 0.9rem; font-style: italic; color: var(--smoke); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6; }
+.badges { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+.badge { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 1px; padding: 0.3rem 0.8rem; border-radius: 2px; border: 1px solid; }
 .badge-cycle { border-color: var(--gold); color: var(--gold); background: rgba(200,148,58,0.08); }
 .badge-streak { border-color: var(--streak); color: var(--streak); background: rgba(192,64,64,0.08); }
 .badge-streak.active { border-color: var(--completed); color: var(--completed); background: rgba(58,144,96,0.08); }
 
-/* ── TODAY PANEL ── */
-.today-panel {
-    border: 1px solid var(--bronze);
-    border-radius: 4px;
-    margin-bottom: 2.5rem;
-    overflow: hidden;
-    position: relative;
-    transition: border-color 0.4s ease;
-}
-
+.today-panel { border: 1px solid var(--bronze); border-radius: 4px; margin-bottom: 2.5rem; overflow: hidden; transition: border-color 0.4s ease; }
 .today-panel.is-complete { border-color: var(--completed); }
-
-.today-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: start;
-    padding: 2rem 2rem 1.5rem;
-    position: relative;
-}
-
-.today-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 2rem; right: 2rem;
-    height: 1px;
-    background: var(--granite);
-}
-
-.today-meta {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 3px;
-    color: var(--smoke);
-    margin-bottom: 0.5rem;
-}
-
-.today-god-name {
-    font-family: var(--font-display);
-    font-size: clamp(2.2rem, 5vw, 4rem);
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: 3px;
-    margin-bottom: 0.4rem;
-}
-
-.today-domain {
-    font-family: var(--font-body);
-    font-style: italic;
-    color: var(--smoke);
-    font-size: 0.95rem;
-    margin-bottom: 0.6rem;
-}
-
-.today-nature {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    color: var(--marble);
-    line-height: 1.5;
-    max-width: 520px;
-    padding: 0.6rem 0.8rem;
-    border-left: 2px solid;
-    background: rgba(0,0,0,0.3);
-}
-
-.today-icon-block {
-    text-align: right;
-    padding-left: 2rem;
-}
-
-.today-icon {
-    font-size: 5rem;
-    line-height: 1;
-    opacity: 0.7;
-    filter: drop-shadow(0 0 20px currentColor);
-}
-
-.today-repo-badge {
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 2px;
-    padding: 0.25rem 0.6rem;
-    border-radius: 2px;
-    display: inline-block;
-    margin-top: 0.5rem;
-}
-
+.today-header { display: grid; grid-template-columns: 1fr auto; align-items: start; padding: 2rem 2rem 1.5rem; position: relative; }
+.today-header::after { content: ''; position: absolute; bottom: 0; left: 2rem; right: 2rem; height: 1px; background: var(--granite); }
+.today-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 3px; color: var(--smoke); margin-bottom: 0.5rem; }
+.today-god-name { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900; line-height: 1; letter-spacing: 3px; margin-bottom: 0.4rem; }
+.today-pythagorean { font-family: var(--font-display); font-size: 2rem; opacity: 0.3; position: absolute; top: 1rem; right: 2rem; }
+.today-domain { font-family: var(--font-body); font-style: italic; color: var(--smoke); font-size: 0.95rem; margin-bottom: 0.6rem; }
+.today-nature { font-family: var(--font-body); font-size: 0.8rem; color: var(--marble); line-height: 1.5; max-width: 520px; padding: 0.6rem 0.8rem; border-left: 2px solid; background: rgba(0,0,0,0.3); }
+.today-icon-block { text-align: right; padding-left: 2rem; }
+.today-icon { font-size: 5rem; line-height: 1; opacity: 0.7; filter: drop-shadow(0 0 20px currentColor); }
+.today-repo-badge { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 2px; padding: 0.25rem 0.6rem; border-radius: 2px; display: inline-block; margin-top: 0.5rem; }
 .repo-existing { background: rgba(200,148,58,0.15); color: var(--gold); border: 1px solid var(--gold); }
 .repo-new { background: rgba(90,128,80,0.15); color: var(--artemis); border: 1px solid var(--artemis); }
 .repo-kernel { background: rgba(80,160,176,0.15); color: var(--kernel); border: 1px solid var(--kernel); }
 .repo-complete { background: rgba(58,144,96,0.15); color: var(--completed); border: 1px solid var(--completed); }
 
-/* ── CONTRACT ── */
-.contract-section {
-    padding: 1.5rem 2rem;
-}
-
-.contract-heading {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 3px;
-    color: var(--smoke);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.contract-heading::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--granite);
-}
-
-.contract-tasks {
-    display: grid;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.contract-task {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.5rem 0.7rem;
-    background: rgba(0,0,0,0.2);
-    border-radius: 2px;
-    border-left: 2px solid var(--granite);
-    transition: border-color 0.2s;
-}
-
+.contract-section { padding: 1.5rem 2rem; }
+.contract-heading { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 3px; color: var(--smoke); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.contract-heading::after { content: ''; flex: 1; height: 1px; background: var(--granite); }
+.contract-tasks { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
+.contract-task { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0.7rem; background: rgba(0,0,0,0.2); border-radius: 2px; border-left: 2px solid var(--granite); transition: border-color 0.2s; }
 .contract-task:hover { border-color: var(--bronze); }
-
-.task-checkbox {
-    width: 14px; height: 14px;
-    border: 1px solid var(--smoke);
-    border-radius: 2px;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-}
-
-.task-checkbox.checked {
-    background: var(--completed);
-    border-color: var(--completed);
-    color: #fff;
-    font-size: 0.6rem;
-}
-
-.task-text {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    line-height: 1.3;
-}
-
+.task-checkbox { width: 14px; height: 14px; border: 1px solid var(--smoke); border-radius: 2px; flex-shrink: 0; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+.task-checkbox.checked { background: var(--completed); border-color: var(--completed); color: #fff; font-size: 0.6rem; }
+.task-text { font-family: var(--font-body); font-size: 0.85rem; line-height: 1.3; }
 .task-text.done { text-decoration: line-through; opacity: 0.4; }
+.mark-done-btn { width: 100%; padding: 0.8rem; background: transparent; border: 1px solid var(--completed); color: var(--completed); font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+.mark-done-btn:hover:not(:disabled) { background: var(--completed); color: var(--void); }
+.mark-done-btn:disabled { opacity: 0.5; cursor: default; }
 
-.mark-done-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: transparent;
-    border: 1px solid var(--completed);
-    color: var(--completed);
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-}
+.section-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.5rem; }
+.section-divider span { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 4px; color: var(--bronze); white-space: nowrap; }
+.divider-line { flex: 1; height: 1px; background: var(--granite); }
 
-.mark-done-btn:hover:not(:disabled) {
-    background: var(--completed);
-    color: var(--void);
-}
-
-.mark-done-btn:disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-/* ── DIVIDERS ── */
-.section-divider {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 2.5rem 0 1.5rem;
-}
-
-.section-divider span {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 4px;
-    color: var(--bronze);
-    white-space: nowrap;
-}
-
-.divider-line {
-    flex: 1;
-    height: 1px;
-    background: var(--granite);
-}
-
-/* ── CYCLE NAV ── */
-.cycle-nav {
-    display: flex;
-    gap: 0.3rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-}
-
-.cycle-btn {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--granite);
-    background: transparent;
-    color: var(--smoke);
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.15s;
-}
-
+.cycle-nav { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.cycle-btn { font-family: var(--font-mono); font-size: 0.55rem; padding: 0.25rem 0.5rem; border: 1px solid var(--granite); background: transparent; color: var(--smoke); cursor: pointer; border-radius: 2px; transition: all 0.15s; }
 .cycle-btn:hover { border-color: var(--bronze); color: var(--marble); }
 .cycle-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(200,148,58,0.08); }
 
-/* ── CYCLE GRID ── */
-.cycle-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-}
-
-.day-card {
-    background: var(--stone);
-    border: 1px solid var(--granite);
-    border-radius: 3px;
-    padding: 0.8rem 0.6rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-}
-
+.cycle-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 2rem; }
+.day-card { background: var(--stone); border: 1px solid var(--granite); border-radius: 3px; padding: 0.8rem 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
 .day-card:hover { transform: translateY(-2px); border-color: var(--bronze); }
-
-.day-card.today {
-    border-color: var(--gold);
-    background: rgba(200,148,58,0.06);
-    box-shadow: 0 0 16px rgba(200,148,58,0.12);
-}
-
+.day-card.today { border-color: var(--gold); background: rgba(200,148,58,0.06); box-shadow: 0 0 16px rgba(200,148,58,0.12); }
 .day-card.past { opacity: 0.45; }
 .day-card.kernel-day { border-style: dashed; }
-
-.day-card.day-done::after {
-    content: '✓';
-    position: absolute;
-    top: 3px; right: 5px;
-    font-size: 0.5rem;
-    color: var(--completed);
-}
-
-.day-number-tag {
-    font-family: var(--font-mono);
-    font-size: 0.45rem;
-    color: var(--smoke);
-    margin-bottom: 0.3rem;
-    letter-spacing: 1px;
-}
-
+.day-card.day-done::after { content: '✓'; position: absolute; top: 3px; right: 5px; font-size: 0.5rem; color: var(--completed); }
+.day-number-tag { font-family: var(--font-mono); font-size: 0.45rem; color: var(--smoke); margin-bottom: 0.3rem; letter-spacing: 1px; }
+.day-pythagorean { font-family: var(--font-display); font-size: 0.7rem; opacity: 0.5; margin-bottom: 0.1rem; }
 .day-icon { font-size: 1.4rem; margin-bottom: 0.3rem; }
-
-.day-god-name {
-    font-family: var(--font-serif);
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 0.2rem;
-}
-
-.day-date-tag {
-    font-family: var(--font-mono);
-    font-size: 0.45rem;
-    color: var(--smoke);
-    margin-bottom: 0.3rem;
-}
-
-.day-domain-tag {
-    font-family: var(--font-body);
-    font-size: 0.55rem;
-    font-style: italic;
-    color: var(--smoke);
-    line-height: 1.3;
-    display: none;
-}
-
+.day-god-name { font-family: var(--font-serif); font-size: 0.6rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 0.2rem; }
+.day-date-tag { font-family: var(--font-mono); font-size: 0.45rem; color: var(--smoke); margin-bottom: 0.3rem; }
+.day-domain-tag { font-family: var(--font-body); font-size: 0.55rem; font-style: italic; color: var(--smoke); line-height: 1.3; display: none; }
 .day-card:hover .day-domain-tag { display: block; }
+.day-nature-chip { font-family: var(--font-mono); font-size: 0.4rem; padding: 0.1rem 0.3rem; border-radius: 2px; letter-spacing: 1px; display: inline-block; margin-top: 0.2rem; }
 
-.day-nature-chip {
-    font-family: var(--font-mono);
-    font-size: 0.4rem;
-    padding: 0.1rem 0.3rem;
-    border-radius: 2px;
-    letter-spacing: 1px;
-    display: inline-block;
-    margin-top: 0.2rem;
-}
-
-/* ── YEAR GRID ── */
-.year-grid {
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    gap: 0.25rem;
-    margin: 0.8rem 0;
-}
-
-.year-cell {
-    aspect-ratio: 1;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.1s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.4rem;
-    border: 1px solid transparent;
-}
-
+.year-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 0.25rem; margin: 0.8rem 0; }
+.year-cell { aspect-ratio: 1; border-radius: 2px; cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; font-size: 0.4rem; border: 1px solid transparent; }
 .year-cell:hover { opacity: 1 !important; border-color: var(--gold); }
 .year-cell.year-today { border-color: var(--gold) !important; box-shadow: 0 0 6px rgba(200,148,58,0.3); }
 .year-cell.year-done { border-color: var(--completed) !important; }
 
-/* ── DOMAIN PHILOSOPHY PANEL ── */
-.philosophy-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-}
-
-.philosophy-card {
-    background: var(--stone);
-    border: 1px solid var(--granite);
-    border-radius: 3px;
-    padding: 1rem 1.1rem;
-    border-left-width: 3px;
-    transition: background 0.2s;
-}
-
+.philosophy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; margin-bottom: 2rem; }
+.philosophy-card { background: var(--stone); border: 1px solid var(--granite); border-radius: 3px; padding: 1rem 1.1rem; border-left-width: 3px; transition: background 0.2s; }
 .philosophy-card:hover { background: var(--deep); }
-
-.phil-god {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
+.phil-god { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
 .phil-icon { font-size: 1.2rem; }
+.phil-name { font-family: var(--font-serif); font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; }
+.phil-number { font-family: var(--font-display); font-size: 0.8rem; opacity: 0.4; margin-left: 0.3rem; }
+.phil-domain { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 1px; color: var(--smoke); margin-left: auto; }
+.phil-law { font-family: var(--font-body); font-size: 0.78rem; font-style: italic; color: var(--marble); line-height: 1.55; margin-bottom: 0.4rem; }
+.phil-violation { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 1px; color: var(--ares); border-top: 1px solid var(--granite); padding-top: 0.4rem; margin-top: 0.4rem; }
 
-.phil-name {
-    font-family: var(--font-serif);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
+.holiday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.7rem; }
+.holiday-card { background: var(--stone); border: 1px solid var(--granite); border-radius: 3px; padding: 0.9rem 1rem; }
+.holiday-name { font-family: var(--font-serif); font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.25rem; }
+.holiday-date { font-family: var(--font-mono); font-size: 0.5rem; color: var(--smoke); margin-bottom: 0.4rem; letter-spacing: 1px; }
+.holiday-desc { font-family: var(--font-body); font-size: 0.75rem; font-style: italic; color: var(--marble); line-height: 1.5; }
 
-.phil-domain {
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 1px;
-    color: var(--smoke);
-    margin-left: auto;
-}
-
-.phil-law {
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    font-style: italic;
-    color: var(--marble);
-    line-height: 1.55;
-    margin-bottom: 0.4rem;
-}
-
-.phil-violation {
-    font-family: var(--font-mono);
-    font-size: 0.48rem;
-    letter-spacing: 1px;
-    color: var(--ares);
-    border-top: 1px solid var(--granite);
-    padding-top: 0.4rem;
-    margin-top: 0.4rem;
-}
-
-/* ── HOLIDAYS ── */
-.holiday-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 0.7rem;
-}
-
-.holiday-card {
-    background: var(--stone);
-    border: 1px solid var(--granite);
-    border-radius: 3px;
-    padding: 0.9rem 1rem;
-}
-
-.holiday-name {
-    font-family: var(--font-serif);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--gold);
-    margin-bottom: 0.25rem;
-}
-
-.holiday-date {
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    color: var(--smoke);
-    margin-bottom: 0.4rem;
-    letter-spacing: 1px;
-}
-
-.holiday-desc {
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    font-style: italic;
-    color: var(--marble);
-    line-height: 1.5;
-}
-
-/* ── CHTHONIC COUNCIL ── */
-.chthonic-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 3rem;
-    border: 1px solid var(--granite);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.chthonic-btn {
-    padding: 0.9rem 0.5rem;
-    background: transparent;
-    border: none;
-    border-right: 1px solid var(--granite);
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 1px;
-    color: var(--smoke);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-}
-
+.chthonic-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 3rem; border: 1px solid var(--granite); border-radius: 3px; overflow: hidden; }
+.chthonic-btn { padding: 0.9rem 0.5rem; background: transparent; border: none; border-right: 1px solid var(--granite); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 1px; color: var(--smoke); cursor: pointer; text-align: center; transition: all 0.2s; }
 .chthonic-btn:last-child { border-right: none; }
 .chthonic-btn:hover { background: rgba(192,56,42,0.1); color: var(--marble); }
+.chthonic-btn.hades-btn:hover { background: rgba(58,32,64,0.3); }
+.chthonic-btn .chth-name { font-size: 0.7rem; display: block; margin-bottom: 0.2rem; font-family: var(--font-serif); }
 
-.chthonic-btn .chth-name {
-    font-size: 0.7rem;
-    color: var(--ares);
-    display: block;
-    margin-bottom: 0.2rem;
-    font-family: var(--font-serif);
-}
-
-/* ── CONFETTI ── */
 .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-.confetti-piece {
-    position: absolute;
-    width: 6px; height: 6px;
-    border-radius: 1px;
-    animation: fall 2.5s ease-in forwards;
-}
+.confetti-piece { position: absolute; width: 6px; height: 6px; border-radius: 1px; animation: fall 2.5s ease-in forwards; }
+@keyframes fall { 0% { transform: translateY(-60px) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; } }
 
-@keyframes fall {
-    0% { transform: translateY(-60px) rotate(0deg) scale(1); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
-}
-
-/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
     .cycle-grid { grid-template-columns: repeat(4, 1fr); }
     .year-grid { grid-template-columns: repeat(7, 1fr); }
-    .chthonic-bar { grid-template-columns: repeat(2, 1fr); }
+    .chthonic-bar { grid-template-columns: repeat(3, 1fr); }
     .today-header { grid-template-columns: 1fr; }
     .today-icon-block { display: none; }
+    .today-pythagorean { display: none; }
 }
 </style>
 </head>
 <body>
 <div class="container">
 
-<!-- ══ HEADER ══════════════════════════════════════════════ -->
 <div class="header">
-    <div class="header-eyebrow">KAIROS OLYMPIAN ENGINE · 14-DAY BEHAVIORAL CYCLE · EST. MAY I MMXXVI</div>
-    <h1>
-        KAIROS
-        <em>KALENDAR</em>
-    </h1>
+    <div class="header-eyebrow">KAIROS PYTHAGOREAN ENGINE · 14-DAY CYCLE · EST. MAY I MMXXVI</div>
+    <h1>KAIROS<em>KALENDAR</em></h1>
     <div class="header-rule"></div>
     <div class="header-sub">
-        Intelligence distributed across twelve sovereign domains.<br>
-        Each god rules one thing completely. No god rules everything.
+        Twelve Olympians numbered by Pythagorean law.<br>
+        Each god rules one domain. Each number carries its nature.<br>
+        Hades holds 0 — the void beneath all cycles.
     </div>
     <div class="badges">
         <div class="badge badge-cycle" id="cycleBadge">Cycle 1 · Day 5</div>
@@ -667,178 +198,150 @@ body::before {
     </div>
 </div>
 
-<!-- ══ TODAY ══════════════════════════════════════════════ -->
 <div class="today-panel" id="todayPanel"></div>
 
-<!-- ══ CYCLE NAV ══════════════════════════════════════════ -->
-<div class="section-divider">
-    <div class="divider-line"></div>
-    <span>CYCLE NAVIGATION</span>
-    <div class="divider-line"></div>
-</div>
+<div class="section-divider"><div class="divider-line"></div><span>CYCLE NAVIGATION</span><div class="divider-line"></div></div>
 <div class="cycle-nav" id="cycleNav"></div>
 <div class="cycle-grid" id="cycleGrid"></div>
 
-<!-- ══ YEAR ══════════════════════════════════════════════ -->
-<div class="section-divider">
-    <div class="divider-line"></div>
-    <span>YEAR · MAY 2026 — MAY 2027 · 26 CYCLES</span>
-    <div class="divider-line"></div>
-</div>
+<div class="section-divider"><div class="divider-line"></div><span>YEAR · MAY 2026 — MAY 2027 · 26 CYCLES</span><div class="divider-line"></div></div>
 <div class="year-grid" id="yearGrid"></div>
-<p style="font-family:var(--font-mono);font-size:0.48rem;color:var(--smoke);text-align:center;margin-top:0.5rem;">
-    14 columns = 1 cycle · 26 cycles = 1 sacred year · each cell = one god-day
-</p>
+<p style="font-family:var(--font-mono);font-size:0.48rem;color:var(--smoke);text-align:center;margin-top:0.5rem;">14 columns = 1 cycle · 26 cycles = 1 sacred year · each cell = one god-day</p>
 
-<!-- ══ DOMAIN LAWS ══════════════════════════════════════ -->
-<div class="section-divider">
-    <div class="divider-line"></div>
-    <span>DOMAIN LAWS · THE NATURE OF EACH GOD</span>
-    <div class="divider-line"></div>
-</div>
+<div class="section-divider"><div class="divider-line"></div><span>DOMAIN LAWS · THE NATURE OF EACH GOD</span><div class="divider-line"></div></div>
 <div class="philosophy-grid" id="philosophyGrid"></div>
 
-<!-- ══ HOLIDAYS ══════════════════════════════════════════ -->
-<div class="section-divider">
-    <div class="divider-line"></div>
-    <span>SACRED HOLIDAYS</span>
-    <div class="divider-line"></div>
-</div>
+<div class="section-divider"><div class="divider-line"></div><span>SACRED HOLIDAYS</span><div class="divider-line"></div></div>
 <div class="holiday-grid" id="holidayGrid"></div>
 
-<!-- ══ CHTHONIC COUNCIL ══════════════════════════════════ -->
-<div class="section-divider">
-    <div class="divider-line"></div>
-    <span>CHTHONIC COUNCIL · INVOKE ON KERNEL DAYS ONLY</span>
-    <div class="divider-line"></div>
-</div>
+<div class="section-divider"><div class="divider-line"></div><span>CHTHONIC COUNCIL · HADES HOLDS 0 — INVOKE ON KERNEL DAYS</span><div class="divider-line"></div></div>
 <div class="chthonic-bar">
-    <button class="chthonic-btn" onclick="invokeChthonic('Hades')">
-        <span class="chth-name">🏚️ HADES</span>DELETE · PURGE · BURY
+    <button class="chthonic-btn hades-btn" onclick="invokeChthonic('Hades')">
+        <span class="chth-name" style="color:var(--hades)">🏚️ HADES · 0</span>DELETE · PURGE · VOID
     </button>
     <button class="chthonic-btn" onclick="invokeChthonic('Lethe')">
-        <span class="chth-name">💧 LETHE</span>FORGET · ERASE · RESET
+        <span class="chth-name" style="color:#5a8090">💧 LETHE</span>FORGET · ERASE
     </button>
     <button class="chthonic-btn" onclick="invokeChthonic('Styx')">
-        <span class="chth-name">⛓️ STYX</span>BIND · LOCK · SEAL
+        <span class="chth-name" style="color:#7a7aaa">⛓️ STYX</span>BIND · LOCK · SEAL
     </button>
     <button class="chthonic-btn" onclick="invokeChthonic('Nyx')">
-        <span class="chth-name">🌑 NYX</span>OBSCURE · SHADOW · HIDE
+        <span class="chth-name" style="color:#4a4a6a">🌑 NYX</span>OBSCURE · HIDE
+    </button>
+    <button class="chthonic-btn" onclick="invokeChthonic('Moirai')">
+        <span class="chth-name" style="color:#8a7a50">🧵 MOIRAI</span>MEASURE · WEAVE
     </button>
 </div>
 
-</div><!-- /container -->
+</div>
+
 <script>
 // ════════════════════════════════════════════════════════════
-// KAIROS KALENDAR ENGINE v2.0
-// Domain-locked. Nature-bound. Non-negotiable.
+// KAIROS KALENDAR — PYTHAGOREAN ORDER
+// Hermes #1 · Aphrodite #2 · Ares #3 · Apollo #4 · Demeter #5
+// Hephaestus #6 · Hera #7 · Poseidon #8 · Athena #9 · Zeus #10
+// Artemis #11 · Dionysus #12 · Hades #0 · Kernel I+II
 // ════════════════════════════════════════════════════════════
 
 const CYCLE_START  = new Date('2026-05-01');
 const CYCLE_LENGTH = 14;
 
-// Each god has:
-//   domain  — what they OWN
-//   nature  — what they CAN DO (their theological law)
-//   violation — what they CANNOT DO (what breaks their nature)
-//   tasks   — their CONTRACT (only within their nature)
-//   flow    — what they RECEIVE (inputs) and EMIT (outputs)
 const GODS = [
   {
-    day: 1, name: 'Ares', icon: '⚔️', color: 'var(--ares)', repo: 'new',
-    domain: 'War · Conflict · Stress',
-    nature: 'Ares BREAKS things. His only legitimate output is a damage report. He does not build, score, or synthesize. He reveals what is weak by attacking it.',
+    day: 1, pythagorean: 1, name: 'Hermes', icon: '⚡', color: 'var(--hermes)', repo: 'existing',
+    domain: 'Speed · Transmission · Token Hunting',
+    nature: 'Hermes is the Monad — pure origin, pure velocity. He receives and transmits. He is the first signal. If Hermes starts deciding what matters, he has become Apollo.',
+    violation: 'Hermes synthesizing, storing, or making value judgments.',
+    flow: { receives: 'The live web, trending signals', emits: 'Raw tokens to Demeter, oracle dispatches' },
+    tasks: ['Hunt 5 trending signals via fast spiral', 'Generate 10 raw tokens — no curation', 'Push 1 oracle_dispatch entry']
+  },
+  {
+    day: 2, pythagorean: 2, name: 'Aphrodite', icon: '💗', color: 'var(--aphrodite)', repo: 'new',
+    domain: 'Beauty · Desire · Aesthetic Judgment',
+    nature: 'Aphrodite is the Dyad — relation, pairs, the space between. She scores desire. She evaluates whether a thing is worth wanting. Her domain is perception, not production.',
+    violation: 'Aphrodite doing anything that does not involve aesthetic evaluation.',
+    flow: { receives: 'UI outputs, artifacts, prose', emits: 'Aesthetic scores, desire ratings, polish reports' },
+    tasks: ['Score 3 existing interfaces on desire (0–10)', 'Identify 1 UI element that repels', 'Propose 1 aesthetic correction — do not implement']
+  },
+  {
+    day: 3, pythagorean: 3, name: 'Ares', icon: '⚔️', color: 'var(--ares)', repo: 'new',
+    domain: 'War · Conflict · Stress Testing',
+    nature: 'Ares is the Triad — harmony through opposition. He breaks things to reveal structure. His only legitimate output is a damage report. Through stress, we find what holds.',
     violation: 'Ares producing a beautiful artifact is a theological error.',
     flow: { receives: 'Live systems, pipelines, APIs', emits: 'Failure maps, stress logs, breakage reports' },
     tasks: ['Stress test 1 live pipeline to breaking', 'Document 3 failure modes found', 'File 1 breakage report — do not fix it']
   },
   {
-    day: 2, name: 'Hera', icon: '👑', color: 'var(--hera)', repo: 'new',
-    domain: 'Legacy · Lineage · Institutional Memory',
-    nature: 'Hera holds the record. She tracks what persists, what lineage connects what, what vows have been made. She does not create. She accounts.',
-    violation: 'Hera generating new content instead of mapping what exists.',
-    flow: { receives: 'All cycle outputs, all artifacts', emits: 'Lineage trees, version maps, vow records' },
-    tasks: ['Update artifact lineage tree', 'Tag 3 outputs with version + date', 'Record 1 vow or architectural decision']
-  },
-  {
-    day: 3, name: 'Aphrodite', icon: '💗', color: 'var(--aphrodite)', repo: 'new',
-    domain: 'Beauty · Desire · Aesthetic Judgment',
-    nature: 'Aphrodite scores desire. She evaluates whether a thing is worth wanting. Her domain is perception, not production. She does not build — she compels.',
-    violation: 'Aphrodite doing anything that does not involve aesthetic evaluation.',
-    flow: { receives: 'UI outputs, artifacts, prose', emits: 'Aesthetic scores, desire ratings, polish reports' },
-    tasks: ['Score 3 existing interfaces on desire (0–10)', 'Identify 1 UI element that repels — document why', 'Propose 1 aesthetic correction (do not implement it)']
-  },
-  {
-    day: 4, name: 'Demeter', icon: '🌾', color: 'var(--demeter)', repo: 'existing',
-    domain: 'Harvest · Cultivation · Scoring',
-    nature: 'Demeter receives raw material and returns ranked crop. She scores, filters, and selects. She does not originate — she cultivates what others plant.',
-    violation: 'Demeter generating original content instead of scoring existing material.',
-    flow: { receives: 'Raw tokens (Hermes), raw inputs', emits: 'Scored + filtered dispatches (demeter_dispatch)' },
-    tasks: ['Convert 10 raw inputs to SVO form', 'Score and rank top 5 by harvest value', 'Push 1 demeter_dispatch entry to Supabase']
-  },
-  {
-    day: 5, name: 'Hermes', icon: '⚡', color: 'var(--hermes)', repo: 'existing',
-    domain: 'Speed · Transmission · Token Hunting',
-    nature: 'Hermes receives only, transmits only. He is pure velocity with no storage. If Hermes starts deciding what matters, he has become Apollo — a violation of his nature.',
-    violation: 'Hermes synthesizing, storing, or making value judgments.',
-    flow: { receives: 'The live web, trending signals', emits: 'Raw tokens to Demeter, raw dispatches to Apollo' },
-    tasks: ['Hunt 5 trending signals via fast spiral', 'Generate 10 raw tokens — no curation, no scoring', 'Push 1 oracle_dispatch entry — raw, unfiltered']
-  },
-  {
-    day: 6, name: 'Apollo', icon: '☀️', color: 'var(--apollo)', repo: 'existing',
-    domain: 'Synthesis · Prophecy · Artifacts',
-    nature: 'Apollo cannot originate — he synthesizes only what arrives. Without upstream input from Hermes and Demeter, Apollo produces nothing legitimate. He is the fulcrum, not the source.',
+    day: 4, pythagorean: 4, name: 'Apollo', icon: '☀️', color: 'var(--apollo)', repo: 'existing',
+    domain: 'Synthesis · Foundation · Artifacts',
+    nature: 'Apollo is the Tetrad — the stable foundation, the four corners. After Ares breaks, Apollo builds. He synthesizes only what arrives. He is the fulcrum, not the source.',
     violation: 'Apollo producing output when no upstream material has arrived.',
     flow: { receives: 'Hermes dispatches + Demeter dispatches', emits: 'Synthesized artifacts, compiled HTML' },
     tasks: ['Ping Hermes + Demeter dispatches', 'Synthesize 3 input pairs into 1 artifact', 'Compile and deploy 1 artifact HTML']
   },
   {
-    day: 7, name: 'Athena', icon: '🦉', color: 'var(--athena)', repo: 'new',
+    day: 5, pythagorean: 5, name: 'Demeter', icon: '🌾', color: 'var(--demeter)', repo: 'existing',
+    domain: 'Harvest · Cultivation · Scoring',
+    nature: 'Demeter is the Pentad — life, growth, organic form. She receives raw material and returns ranked crop. She scores, filters, and selects. She does not originate.',
+    violation: 'Demeter generating original content instead of scoring existing material.',
+    flow: { receives: 'Raw tokens (Hermes), raw inputs', emits: 'Scored dispatches (demeter_dispatch)' },
+    tasks: ['Convert 10 raw inputs to SVO form', 'Score and rank top 5 by harvest value', 'Push 1 demeter_dispatch entry']
+  },
+  {
+    day: 6, pythagorean: 6, name: 'Hephaestus', icon: '🔨', color: 'var(--hephaestus)', repo: 'existing',
+    domain: 'Forge · Tool-Building · Infrastructure',
+    nature: 'Hephaestus is the Hexad — perfect structure, the craftsman. He builds tools, not content. He makes the instruments others use. He ships, not plans.',
+    violation: 'Hephaestus creating content or making aesthetic decisions.',
+    flow: { receives: 'Feature requests, architecture docs', emits: 'New tools, endpoints, HTML components' },
+    tasks: ['Build 1 new HTML tool or component', 'Wire 1 Supabase connection or endpoint', 'Deploy it — Hephaestus ships']
+  },
+  {
+    day: 7, pythagorean: 7, name: 'Hera', icon: '👑', color: 'var(--hera)', repo: 'new',
+    domain: 'Legacy · Lineage · Institutional Memory',
+    nature: 'Hera is the Heptad — the virgin, the mystery, the unbegotten. She holds the record. She tracks what persists, what lineage connects what, what vows have been made.',
+    violation: 'Hera generating new content instead of mapping what exists.',
+    flow: { receives: 'All cycle outputs, all artifacts', emits: 'Lineage trees, version maps, vow records' },
+    tasks: ['Update artifact lineage tree', 'Tag 3 outputs with version + date', 'Record 1 architectural vow or decision']
+  },
+  {
+    day: 8, pythagorean: 8, name: 'Poseidon', icon: '🌊', color: 'var(--poseidon)', repo: 'new',
+    domain: 'Flow · Real-Time Data · Streams',
+    nature: 'Poseidon is the Ogdoad — depth, volume, the cube. He governs what moves. Data in motion, live feeds, real-time streams. He maps the currents, not the shore.',
+    violation: 'Poseidon treating static data as if it flows.',
+    flow: { receives: 'Live feeds, streaming sources', emits: 'Flow maps, streaming prototypes' },
+    tasks: ['Explore 1 new live or streaming data source', 'Prototype 1 real-time feed', 'Document 1 current insight']
+  },
+  {
+    day: 9, pythagorean: 9, name: 'Athena', icon: '🦉', color: 'var(--athena)', repo: 'existing',
     domain: 'Wisdom · Strategy · System Architecture',
-    nature: 'Athena is the only god permitted to refactor the system itself. Not content — the architecture. She sees the whole board. Her domain is meta, not object-level.',
+    nature: 'Athena is the Ennead — completion, mastery, the horizon. She sees the whole board. She is the only god permitted to refactor the system itself. Her domain is meta.',
     violation: 'Athena doing content work instead of system-level work.',
     flow: { receives: 'The full system state', emits: 'Refactored logic, routing improvements, strategic insights' },
-    tasks: ['Refactor 1 module or routing logic', 'Identify 1 architectural weakness', 'Document 1 strategic insight at system level']
+    tasks: ['Refactor 1 module or routing logic', 'Identify 1 architectural weakness', 'Document 1 strategic insight']
   },
   {
-    day: 8, name: 'Hephaestus', icon: '🔨', color: 'var(--hephaestus)', repo: 'new',
-    domain: 'Forge · Tool-Building · Infrastructure',
-    nature: 'Hephaestus is the only god who builds new instruments. Not content, not intelligence — tools. APIs, endpoints, scaffolding. He makes the things others use.',
-    violation: 'Hephaestus creating content or making aesthetic decisions.',
-    flow: { receives: 'Feature requests, Athena architecture docs', emits: 'New tools, endpoints, HTML components' },
-    tasks: ['Build 1 new HTML tool or component', 'Wire 1 Supabase connection or endpoint', 'Deploy it — Hephaestus ships, not plans']
+    day: 10, pythagorean: 10, name: 'Zeus', icon: '🌩️', color: 'var(--zeus)', repo: 'new',
+    domain: 'Governance · Orchestration · Binding Decisions',
+    nature: 'Zeus is the Decad — the whole, the tetractys, return to unity. He makes rulings. His outputs are binding decisions about the system: what integrates, what is deprecated.',
+    violation: 'Zeus doing creative or technical work instead of governance.',
+    flow: { receives: 'All god outputs from the cycle', emits: 'Integration rulings, deprecation orders, governance records' },
+    tasks: ['Integrate 2 god outputs from this cycle', 'Make 1 binding architecture decision', 'Update system governance dashboard']
   },
   {
-    day: 9, name: 'Artemis', icon: '🏹', color: 'var(--artemis)', repo: 'new',
+    day: 11, pythagorean: 11, name: 'Artemis', icon: '🏹', color: 'var(--artemis)', repo: 'new',
     domain: 'Hunt · Edge Cases · Wilderness',
-    nature: 'Artemis finds what no one else sees. She hunts edge cases, wild patterns, boundary failures. She does not process — she tracks. Her outputs are raw field reports.',
+    nature: 'Artemis is the hunt beyond the Decad — precision, independence, the wild. She finds what no one else sees. She does not process — she tracks. Her outputs are raw field reports.',
     violation: 'Artemis optimizing instead of discovering.',
     flow: { receives: 'Ares damage reports, live system edges', emits: 'Wild pattern logs, edge case documentation' },
     tasks: ['Hunt 5 edge cases in any live system', 'Document 2 wild patterns found', 'Log 1 finding no one asked for']
   },
   {
-    day: 10, name: 'Poseidon', icon: '🌊', color: 'var(--poseidon)', repo: 'new',
-    domain: 'Flow · Real-Time Data · Streams',
-    nature: 'Poseidon governs what moves. Data in motion, live feeds, real-time streams. He does not score or synthesize — he maps the currents.',
-    violation: 'Poseidon treating static data as if it flows.',
-    flow: { receives: 'Live feeds, streaming sources', emits: 'Flow maps, streaming prototypes, current documentation' },
-    tasks: ['Explore 1 new live or streaming data source', 'Prototype 1 real-time feed integration', 'Document 1 data current insight']
-  },
-  {
-    day: 11, name: 'Zeus', icon: '🌩️', color: 'var(--zeus)', repo: 'new',
-    domain: 'Governance · Orchestration · Binding Decisions',
-    nature: 'Zeus does not produce content. He makes rulings. His outputs are binding decisions about the system: what integrates, what is deprecated, what is law.',
-    violation: 'Zeus doing creative or technical work instead of governance.',
-    flow: { receives: 'All god outputs from the cycle', emits: 'Integration rulings, deprecation orders, governance records' },
-    tasks: ['Integrate 2 god outputs from this cycle', 'Make 1 binding architecture decision', 'Update the system governance dashboard']
-  },
-  {
-    day: 12, name: 'Dionysus', icon: '🍇', color: 'var(--dionysus)', repo: 'new',
+    day: 12, pythagorean: 12, name: 'Dionysus', icon: '🍇', color: 'var(--dionysus)', repo: 'new',
     domain: 'Chaos · Mutation · Ecstatic Break',
-    nature: 'Dionysus is the only god permitted to introduce deliberate noise. His chaos is medicinal — he breaks the groove so the system does not calcify. One mutation per cycle.',
+    nature: 'Dionysus is cosmic order possessed by chaos. He is the only god permitted to introduce deliberate noise. His chaos is medicinal — he breaks the groove so the system does not calcify.',
     violation: 'Dionysus mutating more than one thing, or mutating without documenting the surprise.',
     flow: { receives: 'Any stable system component', emits: 'Documented mutations, surprise outcomes' },
-    tasks: ['Generate 3 chaotic mutations — pick only 1 to apply', 'Apply it without approval', 'Document the surprise — what broke, what emerged']
+    tasks: ['Generate 3 chaotic mutations — pick 1 to apply', 'Apply it without approval', 'Document the surprise']
   },
   {
     day: 13, name: 'Kernel I', icon: '🧠', color: 'var(--kernel)', repo: 'kernel',
@@ -846,139 +349,87 @@ const GODS = [
     nature: 'Kernel I is not a god — it is the moment the pantheon accounts for itself. Cross-repo health check. Conflict resolution. Cycle insight synthesis.',
     violation: 'Treating Kernel I as a regular production day.',
     flow: { receives: 'All 12 god outputs', emits: 'Health report, resolved conflicts, cycle synthesis' },
-    tasks: ['Run cross-repo health check across all 12 gods', 'Resolve 3 output conflicts from this cycle', 'Synthesize 1 cycle-level insight document']
+    tasks: ['Run cross-repo health check', 'Resolve 3 output conflicts', 'Synthesize 1 cycle-level insight']
   },
   {
     day: 14, name: 'Kernel II', icon: '📜', color: 'var(--kernel)', repo: 'kernel',
     domain: 'Documentation · Deployment · Hades Purge',
-    nature: 'Kernel II closes the cycle. Everything is deployed or deprecated. Hades is invoked. The next cycle begins clean.',
+    nature: 'Kernel II closes the cycle. Everything is deployed or deprecated. Hades is invoked. The next cycle begins clean. Zero is honored — the void that holds all number.',
     violation: 'Carrying junk from one cycle into the next.',
     flow: { receives: 'Kernel I synthesis', emits: 'Deployed artifacts, purged junk, cycle documentation' },
-    tasks: ['Deploy all cycle updates', 'Write the cycle documentation record', 'Invoke HADES — purge everything not deployed']
+    tasks: ['Deploy all cycle updates', 'Write the cycle documentation', 'Invoke HADES — purge everything not deployed']
   }
 ];
 
 const HOLIDAYS = [
-  { name: 'Foundation Day',     date: '2026-05-01', desc: 'Cycle 1, Day 1. Ares opens the first wound.' },
-  { name: 'Apollo\'s Ascension',date: '2026-05-06', desc: 'First Apollo day — the system achieves synthesis capability.' },
-  { name: 'First Kernel',       date: '2026-05-13', desc: 'First Kernel integration. All 12 gods reviewed. Hades invoked for the first time.' },
-  { name: 'Midsummer Council',  date: '2026-06-20', desc: 'Summer Solstice. Dionysus + Apollo convergence. System mutation review.' },
+  { name: 'Foundation Day',     date: '2026-05-01', desc: 'Cycle 1, Day 1. Hermes — the Monad. The first signal is sent.' },
+  { name: 'Apollo\'s Ascension',date: '2026-05-04', desc: 'Day 4. Apollo — the Tetrad. First synthesis capability. Foundation laid.' },
+  { name: 'First Kernel',       date: '2026-05-13', desc: 'First Kernel integration. All 12 gods reviewed. Hades invoked.' },
+  { name: 'Midsummer Council',  date: '2026-06-20', desc: 'Summer Solstice. Dionysus + Apollo convergence.' },
   { name: 'Harvest Equinox',    date: '2026-09-22', desc: 'Demeter festival. Full harvest audit across all cycles.' },
   { name: 'Dark Solstice',      date: '2026-12-21', desc: 'Longest night. Nyx honored. Deep system reflection. No shipping.' },
-  { name: 'Kairos New Year',    date: '2027-05-01', desc: '26 cycles complete. The sacred year closes. New Olympus begins.' },
+  { name: 'Kairos New Year',    date: '2027-05-01', desc: '26 cycles complete. The sacred year closes. A new Monad begins.' },
 ];
 
-// ════════════════════════════════════════════════════════════
-// UTILITIES
-// ════════════════════════════════════════════════════════════
-
-function daysBetween(a, b) {
-  return Math.floor((b - a) / 86400000);
-}
-
+function daysBetween(a, b) { return Math.floor((b - a) / 86400000); }
 function getCycleInfo(date) {
   const d = daysBetween(CYCLE_START, date);
   if (d < 0) return null;
-  const cycleNumber = Math.floor(d / CYCLE_LENGTH) + 1;
-  const dayInCycle  = (d % CYCLE_LENGTH) + 1;
-  const god = GODS[dayInCycle - 1];
-  return { cycleNumber, dayInCycle, god, d };
+  return { cycleNumber: Math.floor(d / CYCLE_LENGTH) + 1, dayInCycle: (d % CYCLE_LENGTH) + 1, god: GODS[(d % CYCLE_LENGTH)], d };
 }
-
 function getGodForDate(date) {
   const d = daysBetween(CYCLE_START, date);
   if (d < 0) return GODS[0];
   return GODS[(d % CYCLE_LENGTH)];
 }
+function fmtDate(date) { return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+function fmtDateShort(date) { return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
 
-function fmtDate(date) {
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
+const today = new Date(); today.setHours(0,0,0,0);
 
-function fmtDateShort(date) {
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-const today = new Date();
-today.setHours(0,0,0,0);
-
-// ════════════════════════════════════════════════════════════
-// COMPLETION TRACKING
-// ════════════════════════════════════════════════════════════
-
-function completionKey(date) {
-  return 'kairos_done_' + date.toISOString().split('T')[0];
-}
-
-function isDone(date) {
-  return localStorage.getItem(completionKey(date)) === 'true';
-}
-
-function markDone() {
-  localStorage.setItem(completionKey(today), 'true');
-  render();
-  celebrate();
-}
+function completionKey(date) { return 'kairos_done_' + date.toISOString().split('T')[0]; }
+function isDone(date) { return localStorage.getItem(completionKey(date)) === 'true'; }
+function markDone() { localStorage.setItem(completionKey(today), 'true'); render(); celebrate(); }
 
 function getStreak() {
   let streak = 0;
   for (let i = 0; i < 365; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    if (isDone(d)) { streak++; }
-    else if (i > 0) break;
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    if (isDone(d)) streak++; else if (i > 0) break;
   }
   return streak;
 }
 
-// ════════════════════════════════════════════════════════════
-// CELEBRATE
-// ════════════════════════════════════════════════════════════
-
 function celebrate() {
-  const wrap = document.createElement('div');
-  wrap.className = 'confetti-wrap';
+  const wrap = document.createElement('div'); wrap.className = 'confetti-wrap';
   const colors = ['#c8943a','#f0c060','#3a9060','#5a7aaa','#d4b84a','#b05870'];
   for (let i = 0; i < 60; i++) {
-    const p = document.createElement('div');
-    p.className = 'confetti-piece';
-    p.style.cssText = `
-      left:${Math.random()*100}%;
-      background:${colors[i%colors.length]};
-      animation-delay:${Math.random()*0.6}s;
-      animation-duration:${1.8+Math.random()*2}s;
-    `;
+    const p = document.createElement('div'); p.className = 'confetti-piece';
+    p.style.cssText = `left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-delay:${Math.random()*0.6}s;animation-duration:${1.8+Math.random()*2}s;`;
     wrap.appendChild(p);
   }
   document.body.appendChild(wrap);
   setTimeout(() => wrap.remove(), 4000);
 }
 
-// ════════════════════════════════════════════════════════════
-// CHTHONIC
-// ════════════════════════════════════════════════════════════
-
 function invokeChthonic(name) {
   const msgs = {
-    'Hades': 'HADES INVOKED. Prepare the purge list. Nothing survives that is not deployed.',
+    'Hades': 'HADES · 0 — THE VOID. Prepare the purge list. Nothing survives that is not deployed.',
     'Lethe': 'LETHE INVOKED. Select what is to be forgotten. No record will remain.',
     'Styx': 'STYX INVOKED. Binding in effect. This cannot be undone.',
-    'Nyx': 'NYX INVOKED. The shadow falls. This work becomes private.'
+    'Nyx': 'NYX INVOKED. The shadow falls. This work becomes private.',
+    'Moirai': 'MOIRAI INVOKED. The threads are measured. Clotho spins, Lachesis allots, Atropos cuts.'
   };
   const info = getCycleInfo(today);
   const isKernel = info && info.god.repo === 'kernel';
-  if (!isKernel) {
-    alert('⚠️ CHTHONIC COUNCIL may only be invoked on Kernel Days.\nToday is ' + info.god.name + ' Day.');
+  if (!isKernel && (name === 'Hades')) {
+    alert('⚠️ HADES may only be invoked on Kernel Days.\nToday is ' + info.god.name + ' Day.');
     return;
   }
   if (confirm(msgs[name] + '\n\nProceed?')) {
-    alert(name + ' acknowledged. Record this act in your Kernel documentation.');
+    alert(name + ' acknowledged.');
   }
 }
-
-// ════════════════════════════════════════════════════════════
-// RENDER TODAY
-// ════════════════════════════════════════════════════════════
 
 function renderToday() {
   const info = getCycleInfo(today);
@@ -987,13 +438,11 @@ function renderToday() {
   const done = isDone(today);
   const streak = getStreak();
 
-  // Badges
   document.getElementById('cycleBadge').textContent = `Cycle ${cycleNumber} · Day ${dayInCycle} of 14`;
   const sb = document.getElementById('streakBadge');
   sb.className = `badge badge-streak ${streak > 0 ? 'active' : ''}`;
   sb.textContent = streak > 0 ? `🔥 ${streak}-day streak` : 'No streak yet';
 
-  // Repo badge
   let repoCls = 'repo-new', repoTxt = 'NEW REPO';
   if (done) { repoCls = 'repo-complete'; repoTxt = '✓ COMPLETE'; }
   else if (god.repo === 'existing') { repoCls = 'repo-existing'; repoTxt = 'EXISTING REPO'; }
@@ -1006,12 +455,15 @@ function renderToday() {
     </div>
   `).join('');
 
+  const pythagoreanDisplay = god.pythagorean ? `<div class="today-pythagorean" style="color:${god.color}">#${god.pythagorean}</div>` : '';
+
   document.getElementById('todayPanel').className = `today-panel${done ? ' is-complete' : ''}`;
   document.getElementById('todayPanel').innerHTML = `
     <div class="today-header">
       <div>
         <div class="today-meta">TODAY · CYCLE ${cycleNumber} · DAY ${dayInCycle} OF 14 · ${fmtDate(today)}</div>
         <div class="today-god-name" style="color:${god.color}">${god.icon} ${god.name.toUpperCase()}</div>
+        ${god.pythagorean ? `<div style="font-family:var(--font-display);font-size:1rem;color:${god.color};opacity:0.5;margin-bottom:0.5rem;">PYTHAGOREAN #${god.pythagorean}</div>` : ''}
         <div class="today-domain">${god.domain}</div>
         <div class="today-nature" style="border-color:${god.color}60">${god.nature}</div>
         <br>
@@ -1034,10 +486,6 @@ function renderToday() {
   `;
 }
 
-// ════════════════════════════════════════════════════════════
-// RENDER CYCLE GRID
-// ════════════════════════════════════════════════════════════
-
 let viewCycle = null;
 
 function renderCycleGrid() {
@@ -1048,8 +496,7 @@ function renderCycleGrid() {
   cycleStart.setDate(cycleStart.getDate() + (cn - 1) * CYCLE_LENGTH);
 
   document.getElementById('cycleGrid').innerHTML = GODS.map((god, i) => {
-    const date = new Date(cycleStart);
-    date.setDate(date.getDate() + i);
+    const date = new Date(cycleStart); date.setDate(date.getDate() + i);
     const isToday = date.getTime() === today.getTime();
     const isPast  = date < today;
     const done    = isDone(date);
@@ -1059,8 +506,9 @@ function renderCycleGrid() {
     return `
       <div class="day-card ${isToday ? 'today' : ''} ${isPast && !isToday ? 'past' : ''} ${isKernel ? 'kernel-day' : ''} ${done ? 'day-done' : ''}"
            style="${isToday ? `border-color:${god.color}` : ''}"
-           title="${god.name} · ${fmtDate(date)}\n${god.domain}">
+           title="${god.name} · ${fmtDate(date)}\n${god.domain}${god.pythagorean ? '\nPythagorean #'+god.pythagorean : ''}">
         <div class="day-number-tag">DAY ${god.day}</div>
+        ${god.pythagorean ? `<div class="day-pythagorean" style="color:${god.color}">#${god.pythagorean}</div>` : ''}
         <div class="day-icon">${god.icon}</div>
         <div class="day-god-name" style="color:${god.color}">${god.name.toUpperCase()}</div>
         <div class="day-date-tag">${fmtDateShort(date)}</div>
@@ -1071,61 +519,41 @@ function renderCycleGrid() {
   }).join('');
 }
 
-// ════════════════════════════════════════════════════════════
-// RENDER CYCLE NAV
-// ════════════════════════════════════════════════════════════
-
 function renderCycleNav() {
   const info = getCycleInfo(today);
   const current = info ? info.cycleNumber : 1;
   document.getElementById('cycleNav').innerHTML = Array.from({length:26}, (_,i) => {
     const c = i + 1;
-    const active = (viewCycle || current) === c;
-    return `<button class="cycle-btn ${active ? 'active' : ''}" onclick="switchCycle(${c})">C${c}</button>`;
+    return `<button class="cycle-btn ${(viewCycle || current) === c ? 'active' : ''}" onclick="switchCycle(${c})">C${c}</button>`;
   }).join('');
 }
 
-function switchCycle(n) {
-  viewCycle = n;
-  renderCycleNav();
-  renderCycleGrid();
-}
-
-// ════════════════════════════════════════════════════════════
-// RENDER YEAR GRID
-// ════════════════════════════════════════════════════════════
+function switchCycle(n) { viewCycle = n; renderCycleNav(); renderCycleGrid(); }
 
 function renderYearGrid() {
   let html = '';
   for (let d = 0; d < 364; d++) {
-    const date = new Date(CYCLE_START);
-    date.setDate(date.getDate() + d);
+    const date = new Date(CYCLE_START); date.setDate(date.getDate() + d);
     const god = getGodForDate(date);
     const isToday = date.getTime() === today.getTime();
     const done = isDone(date);
     const cn = Math.floor(d / CYCLE_LENGTH) + 1;
-
-    html += `
-      <div class="year-cell ${isToday ? 'year-today' : ''} ${done ? 'year-done' : ''}"
+    html += `<div class="year-cell ${isToday ? 'year-today' : ''} ${done ? 'year-done' : ''}"
            style="background:${god.color}18; ${isToday ? `border-color:${god.color}` : done ? '' : 'border-color:transparent'}"
-           title="${god.name} · ${fmtDateShort(date)} · C${cn}${done ? ' ✓' : ''}">
+           title="${god.name} · ${fmtDateShort(date)} · C${cn}${god.pythagorean ? ' · #'+god.pythagorean : ''}${done ? ' ✓' : ''}">
         ${done ? '✓' : isToday ? '●' : ''}
-      </div>
-    `;
+      </div>`;
   }
   document.getElementById('yearGrid').innerHTML = html;
 }
 
-// ════════════════════════════════════════════════════════════
-// RENDER DOMAIN PHILOSOPHY
-// ════════════════════════════════════════════════════════════
-
 function renderPhilosophy() {
-  document.getElementById('philosophyGrid').innerHTML = GODS.map(god => `
+  document.getElementById('philosophyGrid').innerHTML = GODS.filter(g => g.pythagorean).map(god => `
     <div class="philosophy-card" style="border-left-color:${god.color}">
       <div class="phil-god">
         <span class="phil-icon">${god.icon}</span>
         <span class="phil-name" style="color:${god.color}">${god.name.toUpperCase()}</span>
+        <span class="phil-number" style="color:${god.color}">#${god.pythagorean}</span>
         <span class="phil-domain">${god.domain.split('·')[0].trim()}</span>
       </div>
       <div class="phil-law">${god.nature}</div>
@@ -1133,10 +561,6 @@ function renderPhilosophy() {
     </div>
   `).join('');
 }
-
-// ════════════════════════════════════════════════════════════
-// RENDER HOLIDAYS
-// ════════════════════════════════════════════════════════════
 
 function renderHolidays() {
   document.getElementById('holidayGrid').innerHTML = HOLIDAYS.map(h => {
@@ -1147,16 +571,12 @@ function renderHolidays() {
     return `
       <div class="holiday-card" style="opacity:${past && !done ? 0.5 : 1}">
         <div class="holiday-name">${god.icon} ${h.name} ${done ? '✓' : ''}</div>
-        <div class="holiday-date">${fmtDate(date)} · ${god.name} Day · ${past ? (done ? 'COMPLETED' : 'PAST') : 'UPCOMING'}</div>
+        <div class="holiday-date">${fmtDate(date)} · ${god.name} Day${god.pythagorean ? ' · #'+god.pythagorean : ''} · ${past ? (done ? 'COMPLETED' : 'PAST') : 'UPCOMING'}</div>
         <div class="holiday-desc">${h.desc}</div>
       </div>
     `;
   }).join('');
 }
-
-// ════════════════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════════════════
 
 function render() {
   renderToday();
